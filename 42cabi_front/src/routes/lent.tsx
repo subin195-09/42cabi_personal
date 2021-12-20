@@ -1,3 +1,5 @@
+// ./src/routes/lent.tsx
+
 import * as React from 'react';
 
 const Lent = () => {
