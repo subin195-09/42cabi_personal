@@ -1,21 +1,20 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express'
 import path from 'path';
 import swaggerUI from 'swagger-ui-express'
 import YAML from 'yamljs'
 
-const app = express();
+function makeServer(){
+    const app = express();
+    const port = 4242;
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-    res.send('welcome!');
-});
+    const swaggerSpec = YAML.load(path.join(__dirname, './swagger.yaml'));
+    app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+    app.listen(port, ()=>console.log(`Listening on port ${port}`));
 
-const swaggerSpec = YAML.load(path.join(__dirname, './swagger.yaml'));
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+    app.use(express.static(path.join(__dirname, '../public')));
+    app.use('/', function(req, res){
+        res.sendFile(path.join(__dirname, '../public/index.html'));
+    });
+}
 
-app.listen('8080', () => {
-    console.log(`
-  ################################################
-  🛡️  Server listening on port: 8080
-  ################################################
-`);
-});
+makeServer();
