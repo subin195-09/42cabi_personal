@@ -24,6 +24,8 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
+    "mysql": "^2.18.1",
+    "sequelize": "^7.0.0-alpha.2",
     "swagger-cli": "^4.0.4",
     "swagger-ui-express": "^4.3.0",
     "yamljs": "^0.3.0"
