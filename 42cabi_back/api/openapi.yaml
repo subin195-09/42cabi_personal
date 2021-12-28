@@ -6,7 +6,7 @@ info:
   license:
     name: MIT
 servers:
-  - url: 127.0.0.1:8080
+  - url: 127.0.0.1:4242
 paths:
   $ref: './path.yaml'
 components:

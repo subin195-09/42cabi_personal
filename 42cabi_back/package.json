@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "prestart": "tsc",
-    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/app.ts",
+    "dev": "nodemon src/app.ts",
     "build": "tsc -p .",
     "doc": "swagger-cli bundle ./api/openapi.yaml --outfile ./api/swagger.yaml --type yaml",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,7 +26,7 @@
   "dependencies": {
     "mariadb": "^2.5.5",
     "mysql": "^2.18.1",
-    "sequelize": "^7.0.0-alpha.2",
+    "sequelize": "^7.0.0-alpha.3",
     "swagger-cli": "^4.0.4",
     "swagger-ui-express": "^4.3.0",
     "yamljs": "^0.3.0"
