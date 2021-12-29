@@ -8,27 +8,29 @@ info:
 servers:
   - url: '127.0.0.1:4242'
 paths:
-  /user:
-    get:
-      summary: Returns user list
+  /api/user:
+    post:
+      tags:
+        - skim_cabi_user
+      summary: cabi user info
+      operationId: userInfo
+      description: response with 42cabinet_user information
       responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+        description: Inventory item to add
 components:
   parameters: null
   schemas:
-    User:
-      type: object
-      required:
-        - _id
-        - name
-      properties:
-        _id:
-          type: number
-          description: id
-        name:
-          type: string
-          description: 유저 이름
     Error:
       type: object
       properties:
@@ -36,6 +38,25 @@ components:
           type: boolean
         message:
           type: string
+    Success:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+    user:
+      type: object
+      required:
+        - id
+        - content
+      properties:
+        id:
+          type: integer
+          example: 1
+        content:
+          type: string
+          example: skim
   responses:
     BadRequest:
       description: 잘못된 요청
@@ -55,3 +76,12 @@ components:
           example:
             success: false
             message: 서버 내부 오류
+    SuccessResponse:
+      description: 요청 성공
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Success'
+          example:
+            success: true
+            message: 요청 성공

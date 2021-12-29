@@ -1,6 +1,20 @@
-/user:
-  get:
-    summary: Returns user list
-    responses:
-      '400':
-        $ref: './openapi.yaml#/components/responses/BadRequest'
+/api/user:
+    post:
+      tags:
+        - skim_cabi_user
+      summary: cabi user info
+      operationId: userInfo
+      description: response with 42cabinet_user information
+      responses:
+        '200':
+          $ref: './openapi.yaml#/components/responses/SuccessResponse'
+        '400':
+          $ref: './openapi.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: './openapi.yaml#/components/responses/InternalServerError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './openapi.yaml#/components/schemas/user'
+        description: Inventory item to add
