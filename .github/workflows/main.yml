@@ -21,4 +21,4 @@ jobs:
       - name: run ls -al
         run: ls -al
       - name: run test.sh
-        run: chmod 777; ./test.sh
+        run: ./test.sh
