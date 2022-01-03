@@ -20,3 +20,5 @@ jobs:
         run: pwd
       - name: run ls -al
         run: ls -al
+      - name: run test.sh
+        run: ./test.sh
