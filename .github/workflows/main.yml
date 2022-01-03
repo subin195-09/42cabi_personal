@@ -15,10 +15,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: run pwd
         run: pwd
       - name: run ls -al
         run: ls -al
+      - name: chmod update
+        run: chmod 777 ./test.sh
       - name: run test.sh
         run: ./test.sh
