@@ -3,13 +3,13 @@ import path from 'path';
 import swaggerUI from 'swagger-ui-express'
 import YAML from 'yamljs'
 import cors from 'cors';
-import { getUser } from './db/db';
+import { dbConnect } from './db/db';
 import { router } from './route'
 // import db from './db';
 
 function makeServer(){
 	const app = express();
-	const port = 4242;
+	const port = 4000;
 
 	app.use(
 		cors({
@@ -22,9 +22,8 @@ function makeServer(){
 	app.use('/', router);
 
 	app.use('/db', function(req, res){
-		getUser().then((row) => {
-			res.send(row);
-		})
+		dbConnect();
+		res.send('db connect');
 	});
 	// app.use('/db', function(req, res){
 	// 	db();
@@ -36,7 +35,7 @@ function makeServer(){
 
 	app.use(express.static(path.join(__dirname, '../public')));
 	app.use('/', function(req, res){
-		res.sendFile(path.join(__dirname, '../public/index.html'));
+		// res.sendFile(path.join(__dirname, '../public/index.html'));
 	});
 
 	app.listen(port, ()=>console.log(`Listening on port ${port}`));

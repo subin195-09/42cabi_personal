@@ -1,5 +1,6 @@
 import fs from 'fs';
 import mariadb from 'mariadb'
+import { getUser, addUser } from './query';
 
 // const mysqlssh = require('mysql-ssh');
 
@@ -39,12 +40,13 @@ const pool = mariadb.createPool({
 	database: 'skim_cabi'
 });
 
-export async function getUser() {
+export async function dbConnect() {
 	let con, row;
 	try {
 		con = await pool.getConnection();
 		console.log('connected');
-		row = await con.query('SELECT * FROM user');
+		getUser(con);
+		// addUser(con);
 	} catch (err) {
 		throw err;
 	} finally {
