@@ -18,7 +18,5 @@ jobs:
 
       - name: run pwd
         run: pwd
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: run ls -al
+        run: ls -al
