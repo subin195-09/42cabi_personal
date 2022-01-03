@@ -3,7 +3,7 @@ import path from 'path';
 import swaggerUI from 'swagger-ui-express'
 import YAML from 'yamljs'
 import cors from 'cors';
-import { getUser } from './db';
+import { getUser } from './db/db';
 import { router } from './route'
 // import db from './db';
 
