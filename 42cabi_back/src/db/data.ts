@@ -4,6 +4,6 @@ type userInfo = {
 }
 
 export let user: userInfo = {
-	user_id: 2,
-	content: 'hello'
+	user_id: 3,
+	content: "hello"
 }
