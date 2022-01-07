@@ -7,6 +7,11 @@ import { dbConnect } from './db/db';
 import { router } from './route'
 // import db from './db';
 
+import passport from 'passport';
+import passportConfig from './auth/passport';
+import cookieParser from 'cookie-parser';
+import cookieSession from 'cookie-session';
+
 function makeServer(){
 	const app = express();
 	const port = 4000;
@@ -18,6 +23,21 @@ function makeServer(){
             credentials: true
 		})
 	);
+
+	app.use(
+        cookieSession({
+            maxAge: 60 * 60 * 1000,
+            keys: [process.env.COOKIE_KEY || 'secret'],
+        })
+    );
+
+	app.use(express.json());
+    app.use(express.urlencoded({extended: false}));
+    app.use(cookieParser());
+
+	app.use(passport.initialize());
+    app.use(passport.session());
+    passportConfig();
 
 	app.use('/', router);
 
