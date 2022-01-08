@@ -15,9 +15,9 @@ passport.deserializeUser(function(user:any, done:any) {
 });
 
 const FortyTowOpt = {
-	clientID : env.FORTY_TOW_CLIENT_ID,
-	clientSecret : env.FORTY_TOW_CLIENT_SECRET,
-	callbackURL : env.FORTY_TOW_CALLBACK_URL,
+	clientID : env.FORTYTWO_APP_ID,
+	clientSecret : env.FORTYTWO_APP_SECRET,
+	callbackURL : env.CALLBACK_URL,
 	passReqToCallback : true
 };
 
@@ -31,9 +31,9 @@ const FortyTwoVerify = (req:any, accessToken:any, refreshToken:any, profile:any,
         refresh: refreshToken,
 	};
 	console.log(user);
-	// console.log(profile);
-    // console.log(`accessToken : ${accessToken}`);
-    // console.log(`refreshToken: ${refreshToken}`);
+	console.log(profile);
+    console.log(`accessToken : ${accessToken}`);
+    console.log(`refreshToken: ${refreshToken}`);
 	return cb(null, user);
 }
 
