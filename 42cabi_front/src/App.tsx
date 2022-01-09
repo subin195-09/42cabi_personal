@@ -1,9 +1,9 @@
 // ./src/App.tsx
 
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
-import Main from './routes/main'
-import Lent from './routes/lent'
-import Return from './routes/return'
+import Main from './routes/Main'
+import Lent from './routes/Lent'
+import Return from './routes/Return'
 
 function App() {
   return (

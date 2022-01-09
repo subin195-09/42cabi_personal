@@ -1,6 +1,7 @@
 // ./src/routes/lent.tsx
 
 import * as React from 'react';
+import 'Main.css';
 
 const Lent = () => {
 	return (

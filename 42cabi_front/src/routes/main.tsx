@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import axios from 'axios';
-import './main.css';
+import './Main.css';
 
 const url = 'http://localhost:4000/auth/login';
 const hello_url = 'http://localhost:4000/hello';
