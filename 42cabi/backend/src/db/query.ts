@@ -56,14 +56,10 @@ export function locationInfo(client:any){
 	const content:string = `select distinct cabinet.location from cabinet`;
 
 	// console.log('location info');
-	client.query(content).then((err:any, res:any)=>{
-		if (err) throw err;
-		let i = -1;
-		while (res[++i]){
-			cabinetList.location?.push(res[i].location);
-			floorInfo(client, res[i].location);
-		}
-		// console.log(info);
+	const result = client.query(content);
+	result.forEach(async (element:any)=>{
+		cabinetList.location?.push(result.location);
+		floorInfo(client, result.location);
 	});
 }
 //floor info with exact location
@@ -74,18 +70,14 @@ export function floorInfo(client:any, location:string):Array<number>{
 	let tmpCabinetList:Array<Array<Array<cabinetInfo>>> = [];
 
 	// console.log('floor info');
-	client.query(content).then((err:any, res:any)=>{
-		if (err) throw err;
-		let i = -1;
-		while (res[++i]){
-			floorList.push(res[i].floor);
-			list.push(sectionInfo(client, location, res[i].floor, tmpCabinetList));
-		}
-		cabinetList.floor?.push(floorList);
-		cabinetList.section?.push(list);
-		cabinetList.cabinet?.push(tmpCabinetList);
-		// console.log(floorList);
+	const result = client.query(content);
+	result.forEach(async (element:any)=>{	 
+		floorList.push(result.floor);
+	 	list.push(sectionInfo(client, location, element.floor, tmpCabinetList));
 	});
+	cabinetList.floor?.push(floorList);
+	cabinetList.section?.push(list);
+	cabinetList.cabinet?.push(tmpCabinetList);
 	return floorList;
 }
 //section info with exact floor
@@ -95,30 +87,22 @@ export function sectionInfo(client:any, location:string, floor:number, list:any)
 	let cabinetList:Array<Array<cabinetInfo>> = [];
 
 	// console.log('section info');
-	client.query(content).then((err:any, res:any)=>{
-		if (err) throw err;
-		let i = -1;
-		while (res[++i]){
-			sectionList.push(res[i].section);
-			cabinetList.push(getCabinetInfo(client, location, floor, res[i].section));
-		}
-		// console.log(sectionList);
-		list.push(cabinetList);
-	});
+	const result = client.query(content);
+	result.forEach(async (element:any)=>{
+	 	sectionList.push(result.section);
+	 	cabinetList.push(getCabinetInfo(client, location, floor, result.section));
+	})	
+	list.push(cabinetList);
 	return sectionList;
 }
 export function getCabinetInfo(client:any, location:string, floor:number, section:string):Array<cabinetInfo>{
 	const content:string = `select * from cabinet where location='${location}' and floor=${floor} and section='${section}' and activation=1 order by cabinet_num`;
 	let cabinetList:Array<cabinetInfo> = [];
 
-	client.query(content).then((err:any, res:any)=>{
-		if (err) throw err;
-		let i = -1;
-		while (res[++i]){
-			cabinetList.push(res[i]);
-		}
-		// console.log(cabinetList);
-	});
+	const result = client.query(content);
+	result.forEach((element:any)=>{
+		cabinetList.push(element);
+	});	
 	return cabinetList;
 }
 //lent 값 생성

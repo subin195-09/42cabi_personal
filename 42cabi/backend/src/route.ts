@@ -1,5 +1,4 @@
 import express from 'express';
-//const passport = require('passport');
 import passport from 'passport';
 import authCheck from './middleware/auth';
 import {cabinetList, cabinetLent, lent} from './user'
@@ -27,9 +26,9 @@ router.get(
     "/auth/login/callback",
     passport.authenticate("42", {
         // successMessage: "LOGIN SUCCESS!",
-        // successRedirect: "https://cabi.42cadet.kr/lent",
+        // successRedirect: "https://localhost:4000/lent",
         failureMessage: "LOGIN FAILED :(",
-        failureRedirect: "http://cabi.42cadet.kr/",
+        failureRedirect: "http://localhost:4000/",
     }),
     function(req:any, res:any){
         //lent 있는 경우, 순서 확인
@@ -38,9 +37,9 @@ router.get(
 	    console.log('check_user');
             connection(checkUser);
             if (lent.lent_id !== -1){
-                res.redirect('http://cabi.42cadet.kr/return');            
+                res.redirect('http://localhost:4000/return');
             }else{
-                res.redirect('http://cabi.42cadet.kr/lent');
+                res.redirect('http://localhost:4000/lent');
             }
         }catch(err){
             console.log(err);
