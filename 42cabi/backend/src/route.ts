@@ -2,17 +2,18 @@ import express from 'express';
 import passport from 'passport';
 import authCheck from './middleware/auth';
 import {cabinetList, cabinetLent, lent} from './user'
-import {checkUser, createLentLog, createLent } from './db/query'
-import {connection, connectionForLent} from './db/db_dep'
+import {checkUser, createLentLog, createLent, getCabinetInfo} from './db/query'
+import {connection, connectionForLent} from './db/db_dev'
 
 export const router = express.Router();
 
 router.get('/auth/login', passport.authenticate('42'));
-router.post('/', authCheck, function(req:any, res:any){
+router.post('/', authCheck, function(req:any, res:any, next){
     // console.log(req.user);
     res.json({ test: req.user });
 });
-router.post('/api/lent', function(req:any, res:any){
+
+router.post('/lent', function(req:any, res:any){
     try{
         connectionForLent(createLent, req.body.cabinet_id);
         res.send({cabinet_id: req.cabinet_id});
@@ -26,20 +27,18 @@ router.get(
     "/auth/login/callback",
     passport.authenticate("42", {
         // successMessage: "LOGIN SUCCESS!",
-        // successRedirect: "https://localhost:4000/lent",
+        // successRedirect: "/lent",
         failureMessage: "LOGIN FAILED :(",
-        failureRedirect: "http://localhost:4000/",
+        failureRedirect: "http://localhost:3000/",
     }),
     function(req:any, res:any){
         //lent 있는 경우, 순서 확인
-	console.log('callback function!');
         try{
-	    console.log('check_user');
             connection(checkUser);
             if (lent.lent_id !== -1){
-                res.redirect('http://localhost:4000/return');
+                res.redirect('http://localhost:3000/return');
             }else{
-                res.redirect('http://localhost:4000/lent');
+                res.redirect('http://localhost:3000/lent');
             }
         }catch(err){
             console.log(err);
