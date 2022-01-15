@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-export default function ReturnModal(){
+export default function ReturnModal(props:any){
 
   const handleClick = () => {
     const local_url = 'http://localhost:4242/api/return';
     const dev_url = '/api/return';
-    axios.post(local_url).then((res:any)=>{
+    axios.post(local_url, {lent_id: props.lentCabinet.lent_id}).then((res:any)=>{
       alert('반납되었습니다');
-      window.location.href="/lent"
+      window.location.href="/lent";
     }).catch(()=>{
       alert('다시 시도해주세요!');
     })

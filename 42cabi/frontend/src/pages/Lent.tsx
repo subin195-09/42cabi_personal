@@ -38,6 +38,7 @@ export default function Lent(){
   const [info, setInfo] = useState<locationInfo>({});
   const [lent, setLent] = useState<Array<lentInfo>>([]);
   const [target, setTarget] = useState<number>(-1);
+  const [cabiNum, setCabiNum] = useState<number>(-1);
 
   useEffect(()=>{
     if (!info.location){
@@ -53,14 +54,14 @@ export default function Lent(){
   const handleLent = () => {
     const local_url = "http://localhost:4242/api/lent_info"
     const dev_url = "/api/lent_info"
-    axios.post(local_url).then((res:any)=>{
+    axios.post(dev_url).then((res:any)=>{
       setLent(res.data);
     }).catch((err)=>{console.log(err)});
   }
   const handleClick = () => {
     const local_url = "http://localhost:4242/api/cabinet"
     const dev_url = "/api/cabinet"
-    axios.post(local_url).then((res:any)=>{
+    axios.post(dev_url).then((res:any)=>{
       setInfo(res.data);
     }).catch((err)=>{console.log(err)});
   }
@@ -88,7 +89,7 @@ export default function Lent(){
     for (let i = 0; i < info.floor[l_idx].length; i++){
       let floor_name = info.floor[l_idx][i];
       list.push(
-        <Carousel setTarget={setTarget} info={info} l_idx={l_idx} outer_i={i} outer_lent={lent} floor_name={floor_name}></Carousel>
+        <Carousel setTarget={setTarget} setCabiNum={setCabiNum} info={info} l_idx={l_idx} outer_i={i} outer_lent={lent} floor_name={floor_name}></Carousel>
       );
     }
     return list;
@@ -101,7 +102,7 @@ export default function Lent(){
           <Location></Location>
         </div>
         <div className="col">
-          <Menu></Menu>
+          <Menu url="/return"></Menu>
         </div>
       </div>
       <div className="row my-2 mx-2" >
@@ -109,7 +110,7 @@ export default function Lent(){
             <div className="nav nav-tabs border-bottom-0" id="nav-tabs" role="tablist">{navTabs()}</div>
           </nav>
           <div className="tab-content" id="nav-tabContent">{navContent()}</div>
-          <LentModal target={target}></LentModal>
+          <LentModal target={target} cabiNum={cabiNum}></LentModal>
       </div>
     </div>
   );

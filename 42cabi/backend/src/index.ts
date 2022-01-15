@@ -6,8 +6,8 @@ import cors from 'cors'
 import {connectionForCabinet} from './db/db_dev'
 import {router} from './route'
 import dotenv from 'dotenv'
-// dotenv.config({path:'/home/ec2-user/git/42cabi-dev/backend/.env'});
-dotenv.config({path:'./.env.local'})
+dotenv.config({path:'/home/ec2-user/git/42cabi-dev/backend/.env'});
+//dotenv.config({path:'./.env.local'})
 
 import passport from 'passport'
 import passportConfig from './middleware/passport';
@@ -30,7 +30,7 @@ function makeServer(){
 
     const swaggerSpec = YAML.load(path.join(__dirname, '../api/swagger.yaml'));
     app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
-
+        
     if (port === '2424')
         app.use(express.static(path.join(__dirname, "../public")));
 
@@ -51,7 +51,7 @@ function makeServer(){
 
     app.use('/', router);
     connectionForCabinet();
-
+    
     if (port === '2424'){
         app.use('/', function(req, res){
             res.sendFile(path.join(__dirname, '../public/index.html'));
