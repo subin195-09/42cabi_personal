@@ -4,19 +4,20 @@ import {user, cabinetList, cabinetInfo, cabinetLent} from '../user';
 const con = mariadb.createPool({
 	host: 'localhost',
 	user: 'root',
-	password: '',
-	database: '42cabi_DB',
+	password: '0909',
+	database: 'skim_cabi',
 	dateStrings: true
 });
 
-export async function connection(queryFunction:Function) {
-    let pool:mariadb.PoolConnection;
+export async function connection(queryFunction:Function){
+	let pool:mariadb.PoolConnection;
     try{
         pool = await con.getConnection();
 		await queryFunction(pool);
 		if (pool) pool.end();
+		return 1;
     }catch(err){
-	    console.log(err);
+		console.log(err);
         throw err;
     }
 }
@@ -73,11 +74,11 @@ export async function connectionForCabinet(){
   }
 }
 
-export async function connectionForLent(queryFunction:any, cabinet_id:number){
+export async function connectionForID(queryFunction:any, ID:number){
     let pool;
     try{
         pool = await con.getConnection()
-		await queryFunction(pool, cabinet_id);
+		await queryFunction(pool, ID);
 		if (pool) pool.end();
 	}catch(err){
 		console.log(err);

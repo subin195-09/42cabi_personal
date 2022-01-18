@@ -4,8 +4,8 @@ import {user, cabinetList, cabinetInfo} from '../user';
 const con = mariadb.createPool({
 	host: 'localhost',
 	user: 'root',
-	password: '',
-	database: '42cabi_DB',
+	password: '0909',
+	database: 'skim_cabi',
 	dateStrings: true
 });
 

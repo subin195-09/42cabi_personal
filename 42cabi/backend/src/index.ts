@@ -6,19 +6,21 @@ import cors from 'cors'
 import {connectionForCabinet} from './db/db_dev'
 import {router} from './route'
 import dotenv from 'dotenv'
-dotenv.config({path:'/home/ec2-user/git/42cabi-dev/backend/.env'});
-//dotenv.config({path:'./.env.local'})
+// dotenv.config({path:'/home/ec2-user/git/42cabi-dev/backend/.env'});
+// dotenv.config({path:'./.env.local'})
+dotenv.config();
+
+import expressSession from 'express-session';
 
 import passport from 'passport'
 import passportConfig from './middleware/passport';
 import cookieParser from "cookie-parser";
-import cookieSession from "cookie-session";
+// import cookieSession from "cookie-session";
 
 function makeServer(){
     const app = express();
     const port = process.env.PORT || 4242;
-
-    if (port !== '2424'){
+    if (port === '4242'){
         app.use(
             cors({
                 origin: "http://localhost:3000",
@@ -34,17 +36,22 @@ function makeServer(){
     if (port === '2424')
         app.use(express.static(path.join(__dirname, "../public")));
 
-    app.use(
-        cookieSession({
-            maxAge: 60 * 60 * 1000,
-            keys: [process.env.COOKIE_KEY || 'secret'],
-        })
-    );
+    // app.use(
+    //     cookieSession({
+    //         maxAge: 60 * 60 * 1000,
+    //         keys: [process.env.COOKIE_KEY || 'secret'],
+    //     })
+    // );
 
     app.use(express.json());
     app.use(express.urlencoded({extended: false}));
     app.use(cookieParser());
-
+    app.use(expressSession({
+        secret: 'key',
+        resave: false,
+        saveUninitialized: true
+    }));
+    
     app.use(passport.initialize());
     app.use(passport.session());
     passportConfig();

@@ -1,8 +1,17 @@
-// import axios from 'axios'
+import axios from 'axios'
 import './menu.css'
+import MenualModal from '../modal/MenualModal'
+import {useHistory} from 'react-router-dom'
 
 export default function Menu(props:any){
-  const logout = '/auth/logout';
+  const url = '/auth/logout';
+  
+	const history = useHistory();
+  const handleClick = () => {
+    axios.post(url).then((res)=>{
+			history.push('/');
+    }).catch(err=>console.log(err))
+  }
   const cabinetPage = () =>{
     if (props.url === '/return')
       return '내 사물함';
@@ -20,9 +29,11 @@ export default function Menu(props:any){
         </button>
         <div className="dropdown-menu start-50" id={dropdown()} aria-labelledby="dropdownMenuButton">
           <a className="dropdown-item" href={props.url}>{cabinetPage()}</a>
+          <a className="dropdown-item" data-bs-toggle="modal" data-bs-target="#menualmodal">이용안내</a>
           {/* <a className="dropdown-item" href="#">대여 로그</a> */}
-          <a className="dropdown-item" href={logout}>로그아웃</a>
+          <a className="dropdown-item" onClick={handleClick}>로그아웃</a>
         </div>
+        <MenualModal></MenualModal>
       </div>
   )
 }

@@ -4,9 +4,11 @@ import Menu from '../component/Menu'
 import LentModal from '../modal/LentModal'
 import './lent.css'
 import './main.css'
-import CabinetBox from '../component/CabinetBox'
-import {useState, useEffect} from 'react'
+import ContentsModal from '../modal/ContentsModal';
+import { userInfo } from './Main'
+import React, {useState, useEffect} from 'react'
 import Carousel from '../component/Carousel'
+import {useHistory} from 'react-router-dom'
 
 export type cabinetInfo = {
   cabinet_id: number,
@@ -39,29 +41,39 @@ export default function Lent(){
   const [lent, setLent] = useState<Array<lentInfo>>([]);
   const [target, setTarget] = useState<number>(-1);
   const [cabiNum, setCabiNum] = useState<number>(-1);
+  const [user, setUser] = useState<userInfo>();
+  const [isLent, setisLent] = useState<number>(0);
 
+  const history = useHistory();
   useEffect(()=>{
+    apiCheck();
     if (!info.location){
       console.log('info');
       handleClick();
     }
-    if (!lent[0]){
-      console.log('lent');
-      handleLent();
-    }
+    console.log('lent');
+    handleLent();
   }, [l_idx, info]);
 
+  const apiCheck = async () => {
+    await axios.post('/api/check').then((res:any)=>{
+      setUser(res.data.user);
+    }).catch((err:any)=>{
+      console.log(err);
+			history.push('/');
+		});
+  }
+
   const handleLent = () => {
-    const local_url = "http://localhost:4242/api/lent_info"
-    const dev_url = "/api/lent_info"
-    axios.post(dev_url).then((res:any)=>{
-      setLent(res.data);
+    const url = "/api/lent_info"
+    axios.post(url).then((res:any)=>{
+      setLent(res.data.cabinetLent);
+      setisLent(res.data.isLent);
     }).catch((err)=>{console.log(err)});
   }
   const handleClick = () => {
-    const local_url = "http://localhost:4242/api/cabinet"
-    const dev_url = "/api/cabinet"
-    axios.post(dev_url).then((res:any)=>{
+    const url = "/api/cabinet"
+    axios.post(url).then((res:any)=>{
       setInfo(res.data);
     }).catch((err)=>{console.log(err)});
   }
@@ -110,8 +122,14 @@ export default function Lent(){
             <div className="nav nav-tabs border-bottom-0" id="nav-tabs" role="tablist">{navTabs()}</div>
           </nav>
           <div className="tab-content" id="nav-tabContent">{navContent()}</div>
-          <LentModal target={target} cabiNum={cabiNum}></LentModal>
+          <React.Fragment>
+            { isLent === -1 ? 
+          <LentModal target={target} cabiNum={cabiNum}></LentModal> :
+          <ContentsModal contents="이미 대여중인 사물함이 있어요 :)"/>
+            }
+          </React.Fragment>
       </div>
     </div>
   );
 }
+
