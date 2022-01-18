@@ -3,7 +3,7 @@ import passport from 'passport';
 import authCheck from './middleware/auth';
 import {cabinetList, cabinetLent, lent, user, userList, lentCabinet} from './user'
 import {checkUser, createLentLog, createLent, getLentUser, getUser} from './db/query'
-import {connection, connectionForID} from './db/db_dev'
+import {connection, connectionForID, connectionForLent} from './db/db_dev'
 import { createBrotliCompress } from 'zlib';
 
 export const router = express.Router();
@@ -52,7 +52,7 @@ router.post("/api/cabinet", (req:any, res:any)=>{
 })
 
 router.post("/api/lent_info", async (req:any, res:any)=>{
-    console.log("lent_info: ", req.user);
+    // console.log("lent_info: ", req.user);
     try{
         connection(getLentUser).then((resp:any)=>{
             const isLent = cabinetLent.findIndex((cabinet)=>(cabinet.lent_user_id == req.user.userid));
@@ -67,9 +67,10 @@ router.post("/api/lent_info", async (req:any, res:any)=>{
 
 router.post('/api/lent', (req:any, res:any)=>{
     try{
+        // console.log("lent :", req.body.cabinet_id);
         connection(getUser).then((resp:any)=> {
         if (lentCabinet.lent_id === -1){
-            connectionForID(createLent, req.body.cabinet_id);
+            connectionForLent(createLent, req.body.cabinet_id, req.user.userid);
             res.send({cabinet_id: req.cabinet_id});
         }
         else{
@@ -83,7 +84,7 @@ router.post('/api/lent', (req:any, res:any)=>{
 })
 
 router.post("/api/return_info", async (req:any, res:any)=>{
-    console.log("return_info: ", req.user);
+    // console.log("return_info: ", req.user);
     try{
         connection(getUser).then((resp:any)=> {
 		    res.send({lentCabinet : lentCabinet});
@@ -95,7 +96,7 @@ router.post("/api/return_info", async (req:any, res:any)=>{
 })
 
 router.post("/api/return", (req:any, res:any)=>{
-    console.log("return: ", req.user.userid);
+    // console.log("return: ", req.user.userid);
     try{
         connectionForID(createLentLog, req.user.userid).then((resp:any) => {
             res.sendStatus(200);
@@ -108,7 +109,7 @@ router.post("/api/return", (req:any, res:any)=>{
 
 router.post("/api/check", (req:any, res:any)=>{
     console.log('api check!!!');
-		console.log(req.user);
+		// console.log(req.user);
 		//console.log(req.cookies);
     if (!req.session || !req.session.passport || !req.session.passport.user){
 			console.log('fail');

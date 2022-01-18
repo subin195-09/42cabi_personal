@@ -74,6 +74,18 @@ export async function connectionForCabinet(){
   }
 }
 
+export async function connectionForLent(queryFunction:any, cabinetID:number, ID:number){
+    let pool;
+    try{
+        pool = await con.getConnection()
+		await queryFunction(pool, cabinetID, ID);
+		if (pool) pool.end();
+	}catch(err){
+		console.log(err);
+        throw err;
+    }
+}
+
 export async function connectionForID(queryFunction:any, ID:number){
     let pool;
     try{

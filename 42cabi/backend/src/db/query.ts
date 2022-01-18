@@ -136,8 +136,8 @@ export function getCabinetInfo(client:mariadb.PoolConnection, location:string, f
 	return cabinetList;
 }
 //lent 값 생성
-export function createLent(client:mariadb.PoolConnection, cabinet_id:number){
-	const content:string = `INSERT INTO lent (lent_cabinet_id, lent_user_id, lent_time, expire_time, extension) VALUES (${cabinet_id}, ${user.user_id}, now(), ADDDATE(now(), 30), 0)`;
+export function createLent(client:mariadb.PoolConnection, cabinet_id:number, user_id:number){
+	const content:string = `INSERT INTO lent (lent_cabinet_id, lent_user_id, lent_time, expire_time, extension) VALUES (${cabinet_id}, ${user_id}, now(), ADDDATE(now(), 30), 0)`;
 	client.query(content).then((res:any)=>{
 		console.log(res);
 	  }).catch((err:any)=>{
